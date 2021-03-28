@@ -12,6 +12,8 @@ namespace WizeTech_Business_CRM.Authorization
             context.CreatePermission(PermissionNames.Pages_Users_Activation, L("UsersActivation"));
             context.CreatePermission(PermissionNames.Pages_Roles, L("Roles"));
             context.CreatePermission(PermissionNames.Pages_Tenants, L("Tenants"), multiTenancySides: MultiTenancySides.Host);
+            context.CreatePermission(PermissionNames.Pages_Brands, L("Brands"));
+            context.CreatePermission(PermissionNames.Pages_Brands_Edit, L("Brands_Edit"));
         }
 
         private static ILocalizableString L(string name)
