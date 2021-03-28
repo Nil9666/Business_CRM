@@ -208,10 +208,23 @@ export class BrandServiceProxy {
     }
 
     /**
+     * @param filterText (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
      * @return Success
      */
-    getAll(): Observable<BrandDto[]> {
-        let url_ = this.baseUrl + "/api/services/app/Brand/GetAll";
+    getAll(filterText: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<GetAllBrandsOutputDto> {
+        let url_ = this.baseUrl + "/api/services/app/Brand/GetAll?";
+        if (filterText !== undefined && filterText !== null)
+            url_ += "FilterText=" + encodeURIComponent("" + filterText) + "&";
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -229,14 +242,14 @@ export class BrandServiceProxy {
                 try {
                     return this.processGetAll(<any>response_);
                 } catch (e) {
-                    return <Observable<BrandDto[]>><any>_observableThrow(e);
+                    return <Observable<GetAllBrandsOutputDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<BrandDto[]>><any>_observableThrow(response_);
+                return <Observable<GetAllBrandsOutputDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetAll(response: HttpResponseBase): Observable<BrandDto[]> {
+    protected processGetAll(response: HttpResponseBase): Observable<GetAllBrandsOutputDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -247,11 +260,7 @@ export class BrandServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200.push(BrandDto.fromJS(item));
-            }
+            result200 = GetAllBrandsOutputDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -259,7 +268,7 @@ export class BrandServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<BrandDto[]>(<any>null);
+        return _observableOf<GetAllBrandsOutputDto>(<any>null);
     }
 }
 
@@ -2253,6 +2262,61 @@ export interface IBrandDto {
     brandName: string | undefined;
     isActive: boolean;
     id: number;
+}
+
+export class GetAllBrandsOutputDto implements IGetAllBrandsOutputDto {
+    items: BrandDto[] | undefined;
+    total: number;
+
+    constructor(data?: IGetAllBrandsOutputDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items.push(BrandDto.fromJS(item));
+            }
+            this.total = _data["total"];
+        }
+    }
+
+    static fromJS(data: any): GetAllBrandsOutputDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetAllBrandsOutputDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        data["total"] = this.total;
+        return data; 
+    }
+
+    clone(): GetAllBrandsOutputDto {
+        const json = this.toJSON();
+        let result = new GetAllBrandsOutputDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IGetAllBrandsOutputDto {
+    items: BrandDto[] | undefined;
+    total: number;
 }
 
 export class ChangeUiThemeInput implements IChangeUiThemeInput {

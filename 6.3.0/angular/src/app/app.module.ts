@@ -39,6 +39,7 @@ import { SidebarLogoComponent } from './layout/sidebar-logo.component';
 import { SidebarUserPanelComponent } from './layout/sidebar-user-panel.component';
 import { SidebarMenuComponent } from './layout/sidebar-menu.component';
 import { BrandsComponent } from './brands/brands.component';
+import {TableModule} from 'primeng/table';
 
 @NgModule({
   declarations: [
@@ -85,6 +86,7 @@ import { BrandsComponent } from './brands/brands.component';
     ServiceProxyModule,
     SharedModule,
     NgxPaginationModule,
+    TableModule,
   ],
   providers: [],
   entryComponents: [

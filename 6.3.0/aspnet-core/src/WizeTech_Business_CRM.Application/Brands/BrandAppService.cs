@@ -7,6 +7,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Abp.Collections.Extensions;
+using Abp.Linq.Extensions;
+using System.Linq.Dynamic.Core;
+using Abp.Extensions;
 
 namespace WizeTech_Business_CRM.Brands
 {
@@ -47,19 +51,27 @@ namespace WizeTech_Business_CRM.Brands
             }
         }
 
-        public async Task<List<BrandDto>> GetAll()
+        public GetAllBrandsOutputDto GetAll(BrandFilteredDto input)
         {
-            var Brands = await _brandRepository.GetAllListAsync(e => e.TenantId == AbpSession.TenantId);
-
             try
             {
-                var BrandsList = ObjectMapper.Map<List<BrandDto>>(Brands.OrderByDescending(e => e.CreationTime).ToList());
+                 var Brands = ObjectMapper.Map<List<BrandDto>>(_brandRepository.GetAll().Where(e => e.TenantId == AbpSession.TenantId).AsQueryable()
+                .WhereIf(!input.FilterText.IsNullOrWhiteSpace(), x => x.BrandName.ToLower().Contains(input.FilterText.ToLower()))
+                .OrderByDescending(e => e.CreationTime).ToList());
 
-                return BrandsList;
+                return new GetAllBrandsOutputDto()
+                { 
+                    Items = Brands,
+                    Total = Brands.Count
+                };
             }
             catch (Exception ex)
             {
-                return new List<BrandDto>();
+                return new GetAllBrandsOutputDto()
+                {
+                    Items = new List<BrandDto>(),
+                    Total = 0
+                };
             }
         }
     }
