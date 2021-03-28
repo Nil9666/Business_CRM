@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WizeTech_Business_CRM.EntityFrameworkCore;
 
 namespace WizeTech_Business_CRM.Migrations
 {
     [DbContext(typeof(WizeTech_Business_CRMDbContext))]
-    partial class WizeTech_Business_CRMDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210328105907_Brand_Table_Created")]
+    partial class Brand_Table_Created
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
