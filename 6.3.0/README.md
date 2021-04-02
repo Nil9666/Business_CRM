@@ -38,4 +38,4 @@ Create & download your project from https://aspnetboilerplate.com/Templates
 
 ### `entryPoint` _{string}_
 
-![](angular/firebase.json)
+The location of your [`firebase.json`](https://firebase.google.com/docs/cli#the_firebasejson_file) file. Defaults to `.` (the root of your repo).
