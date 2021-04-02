@@ -1,6 +1,6 @@
 {
-  "remoteServiceBaseUrl": "http://localhost:21021",
-  "appBaseUrl": "http://localhost:4200",
+  "remoteServiceBaseUrl": "https://BusinessCRM-api.somee.com",
+  "appBaseUrl": "https://businesscrm-angular.web.app/",
   "localeMappings": [
     {
       "from": "pt-BR",
