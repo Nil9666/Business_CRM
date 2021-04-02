@@ -13,5 +13,6 @@ jobs:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_BUSINESSCRM_ANGULAR }}'
           projectId: businesscrm-angular
+          entryPoint: "./6.3.0/angular"
         env:
           FIREBASE_CLI_PREVIEWS: hostingchannels
